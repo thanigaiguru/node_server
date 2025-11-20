@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vercel dev",
-    "start": "node app/index.js"
+    "start": "node index.js"
   },
   "dependencies": {}
 }
