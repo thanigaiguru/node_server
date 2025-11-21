@@ -7,13 +7,13 @@ export default function handler(req, res) {
     const logFile = path.join("/tmp", `log-${today}.txt`);
 
     if (!fs.existsSync(logFile)) {
-      return res.status(404).json({ error: "No logs yet" });
+      return res.status(404).json({ message: "No logs found yet" });
     }
 
-    const logs = fs.readFileSync(logFile, "utf8");
-    res.status(200).send(logs);
+    const data = fs.readFileSync(logFile, "utf8");
+    res.status(200).send(`<pre>${data}</pre>`);
 
   } catch (error) {
-    res.status(500).json({ error: "Failed to read logs" });
+    res.status(500).json({ error: error.message });
   }
 }
