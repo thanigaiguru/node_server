@@ -1,4 +1,4 @@
-import { connectDB } from "../utils/db";
+import { connectDB } from "../utils/db.js";
 
 export default async function handler(req, res) {
   try {
