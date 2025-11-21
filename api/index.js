@@ -1,23 +1,24 @@
-import fs from "fs";
-import path from "path";
+import { connectDB } from "../utils/db.js";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   try {
-    const today = new Date().toISOString().split("T")[0];
-    const logFile = path.join("/tmp", `log-${today}.txt`);
+    const db = await connectDB();
+    const collection = db.collection("logs");
 
     const entry = {
       timestamp: new Date().toISOString(),
-      userAgent: req.headers["user-agent"],
       ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+      userAgent: req.headers["user-agent"],
       path: req.url,
-      query: req.query
+      method: req.method,
+      query: req.query,
     };
 
-    fs.appendFileSync(logFile, JSON.stringify(entry) + "\n");
-    res.status(200).json({ success: true, logged: today });
+    await collection.insertOne(entry);
 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({ success: true, logged: entry });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 }
