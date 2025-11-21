@@ -1,16 +1,19 @@
 import { MongoClient } from "mongodb";
 
-let cachedClient = null;
-let cachedDb = null;
+const uri = process.env.MONGO_URL;
+const options = {};
+
+let client;
+let clientPromise;
+
+if (!global._mongoClientPromise) {
+  client = new MongoClient(uri, options);
+  global._mongoClientPromise = client.connect(); // cache the promise globally
+}
+
+clientPromise = global._mongoClientPromise;
 
 export async function connectDB() {
-  if (cachedDb) return cachedDb;
-
-  const client = new MongoClient(process.env.MONGO_URL);
-  await client.connect();
-
-  cachedClient = client;
-  cachedDb = client.db("logserver"); // DB name
-
-  return cachedDb;
+  const client = await clientPromise;
+  return client.db("logserver");
 }
