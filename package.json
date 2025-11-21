@@ -1,11 +1,8 @@
 {
-  "name": "my-vercel-node-api",
+  "name": "node_server",
   "version": "1.0.0",
-  "private": true,
-  "main": "api/hello.js",
-  "scripts": {
-    "dev": "vercel dev"
-  },
   "type": "module",
-  "dependencies": {}
+  "dependencies": {
+    "@vercel/node": "^3.0.0"
+  }
 }

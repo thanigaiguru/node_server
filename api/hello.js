@@ -1,8 +1,9 @@
-export default function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Only GET allowed" });
-  }
+const express = require("express");
+const app = express();
+const serverless = require("serverless-http");
 
-  res.status(200).json({ message: "Hello from Vercel API" });
-}
+app.get("/", (req, res) => {
+  res.send("Hello from Express on Vercel");
+});
 
+module.exports = serverless(app);
