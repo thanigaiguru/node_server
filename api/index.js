@@ -5,6 +5,11 @@ export default async function handler(req, res) {
     const db = await connectDB();
     const collection = db.collection("logs");
 
+    const userAgent = req.headers["user-agent"] || "";
+    if (userAgent.includes("vercel")) {
+      return res.status(204).end();
+    }
+
     const entry = {
       timestamp: new Date().toLocaleString("en-US", {timeZone: 'asia/kolkata'}),
       ip: req.headers["x-forwarded-for"] || req.connection?.remoteAddress || req.socket?.remoteAddress || "unknown-ip",
