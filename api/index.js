@@ -17,9 +17,7 @@ export default async function handler(req, res) {
       path: req.url,
       method: req.method,
       query: req.query,
-      referer: req.headers.referer || "none",
-      project_id: req.project_id || "fissionx_website",
-      api_key: req.api_key || "fissionx_website",
+      referer: req.headers.referer || "none"
     };
 
     collection.insertOne(entry).catch(() => {});
